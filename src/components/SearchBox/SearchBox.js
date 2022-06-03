@@ -1,43 +1,57 @@
-import React, { Component } from 'react';
-import './SearchBox.css';
+import React, { Component } from "react";
+import "./SearchBox.css";
+import axios from "axios";
+import { baseUrl } from "../../redux/constants";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-class SearchBox extends Component {
-    state = {
-        searchLine: ''
+function SearchBox() {
+  const [searchLine, setSearchLine] = useState("");
+  const searchLineChangeHandler = (e) => {
+    setSearchLine({ searchLine: e.target.value });
+  };
+  const searchBoxSubmitHandler = (e) => {
+    e.preventDefault();
+  };
+  const getData = async () => {
+    const apiKey = "6ee66a27";
+    const res = axios.get(
+      baseUrl + `?s=${this.state.searchLine}&apikey=${apiKey}`
+    );
+    const data = res.data;
+    if(!data){
+        throw console.log("Error")
     }
-    searchLineChangeHandler = (e) => {
-        this.setState({ searchLine: e.target.value });
-    }
-    searchBoxSubmitHandler = (e) => {
-        e.preventDefault();
-    }
-    render() {
-        const { searchLine } = this.state;
+    console.log(data.Search);
 
-        return (
-            <div className="search-box">
-                <form className="search-box__form" onSubmit={this.searchBoxSubmitHandler}>
-                    <label className="search-box__form-label">
-                        Искать фильм по названию:
-                        <input
-                            value={searchLine}
-                            type="text"
-                            className="search-box__form-input"
-                            placeholder="Например, Shawshank Redemption"
-                            onChange={this.searchLineChangeHandler}
-                        />
-                    </label>
-                    <button
-                        type="submit"
-                        className="search-box__form-submit"
-                        disabled={!searchLine}
-                    >
-                        Искать
-                    </button>
-                </form>
-            </div>
-        );
-    }
+    return data.Search;
+  };
+//   const dispatch = useDispatch()
+
+  return (
+    <div className="search-box">
+      <form className="search-box__form" onSubmit={searchBoxSubmitHandler}>
+        <label className="search-box__form-label">
+          Искать фильм по названию:
+          <input
+            value={searchLine}
+            type="text"
+            className="search-box__form-input"
+            placeholder="Например, Shawshank Redemption"
+            onChange={searchLineChangeHandler}
+          />
+        </label>
+        <button
+          type="submit"
+          className="search-box__form-submit"
+          onClick={""}
+          disabled={!searchLine}
+        >
+          Искать
+        </button>
+      </form>
+    </div>
+  );
 }
- 
+
 export default SearchBox;

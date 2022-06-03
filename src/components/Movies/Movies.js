@@ -3,6 +3,7 @@ import MovieItem from '../MovieItem/MovieItem';
 import './Movies.css';
 
 class Movies extends Component {
+    url = `http://www.omdbapi.com/?i=tt3896198&apikey=6ee66a27`
     state = { 
         movies: [
             {
